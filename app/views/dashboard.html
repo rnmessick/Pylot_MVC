@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Welcome {{session['user']['name']}}!</h2>
+
+<h4>Here are your appointments for :</h4>
+
+<div class="container">
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th>Tasks</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+          <tr>
+            <td>{{task['title']}}</td>
+            <td>{{task['time']}}</td>
+            <td>{{task['status']}}</td>
+            <th><a href="/appointments/{{task['id']}}">edit</a> <a href="/appointments/{{session['user']['id']}}/delete/{{task['id']}}">delete</a></th>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="container">
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th>Tasks</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for other_task in other_tasks %}
+          <tr>
+            <td>{{other_task['title']}}</td>
+            <td>{{other_task['date']}}</td>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class='error'>{{message}}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<form action="/appointments/add" method='post'>
+  Date: <input required type="date" name="date">
+  Time: <input required type="time" name="time">
+  Task: <input required type="text" name="title">
+  Status: <input required type="text" value="pending" name="status">
+  <input type="submit" value="Add">
+</form>
+
+Dashboard. Logged in user is {{session['user']}}
+{% endblock %}

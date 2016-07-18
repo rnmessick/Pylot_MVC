@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class='error'>{{message}}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+        {% for task in tasks %}
+<div>
+   
+<form action="/appointments/{{session['user']['id']}}/edit/{{task['id']}}" method='post'>
+  Task: {{task['title']}}<input required type="text" name="title">
+  Status:{{task['status']}} <select required type="text" name="status">
+  <option value="Done">Done</option>
+  <option value="Pending">Pending</option>
+  <option value="Missed">Missed</option>
+</select>
+  Date:{{task['date']}}  <input required type="date" value="yyyy-mm-dd"  name="date">
+  Time:{{task['time']}} <input required type="time" name="time">
+  <input type="submit" value="Update">
+</form>
+     {% endfor %}</div>
+{% endblock %}
